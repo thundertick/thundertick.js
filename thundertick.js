@@ -62,6 +62,12 @@ new function(){
 			}
 		});
 
+		this.chromePort.onMessage.addListener(function(req){
+			if(req.type == "error"){
+				throw new Error(req.body.error);
+			}
+		});
+
 		//Registers Extension
 		this.chromePort.postMessage({
 			type:"registration",
