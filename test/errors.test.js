@@ -54,4 +54,47 @@ describe("Test thundertick errors", ()=>{
 		done();
 	});
 
+	it("should throw error for returning results not in an array", function(done){
+
+		testExtension.search = function(q, cb){
+			cb('test');
+		}
+		var p = new thundertick(testExtension);
+
+		(function(){
+			p.chromePort.triggerMessage({
+				type:'search-query',
+				body:{
+					query:'abc'
+				}
+			});
+		})
+		.should.throw("Search function should return an array");
+
+		done();
+	});
+
+
+	it("should throw error for returning results in an invalid format", function(done){
+
+		testExtension.search = function(q, cb){
+			cb([{
+				name:"test"
+			}]);
+		}
+
+		var p = new thundertick(testExtension);
+		(function(){
+			p.chromePort.triggerMessage({
+				type:'search-query',
+				body:{
+					query:'abc'
+				}
+			});
+		})
+		.should.throw("You are missing certain attributes in your results");
+
+		done();
+	});
+
 });
