@@ -4,7 +4,7 @@ new function(){
 		if(!opts.regex || !opts.answerRegex || !opts.search || !opts.suggestion){
 			throw new Error("Missing required options");
 		}
-		if(typeof regex != 'string' || typeof answerRegex != 'string'){
+		if(typeof opts.regex != 'string' || typeof opts.answerRegex != 'string'){
 			throw new Error("Regex and answerRegex have to be defined as strings");
 		}
 		//Register Extension with thundertick
