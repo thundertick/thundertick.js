@@ -36,6 +36,12 @@ new function(){
 					if(!Array.isArray(results)){
 						throw new Error("Search function should return an array");
 					} else {
+						for(var i in results){
+							var result = results[i];
+							if(!result.name || !result.content || !result.title){
+								throw new Error("You are missing certain attributes in your results");
+							}
+						}
 						this.chromePort.postMessage({
 							type:"results",
 							body:{
