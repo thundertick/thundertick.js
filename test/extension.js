@@ -5,7 +5,7 @@
 module.exports = {
 	regex:"share",
 	answerRegex:"^(share:)(.+)",
-	debug:true,
+	debug:false,
 	search:function(query, cb){
 		cb([]);
 	},
@@ -15,7 +15,7 @@ module.exports = {
 	reset: function(){
 		this.regex = "share";
 		this.answerRegex = "^(share:)(.+)";
-		this.debug = true;
+		this.debug = false;
 		this.search = function(query,cb){
 			cb([]);
 		}
