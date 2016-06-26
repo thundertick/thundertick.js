@@ -1,0 +1,27 @@
+{
+  "name": "thundertick.js",
+  "version": "0.0.1",
+  "description": "Library to build extensions for thundertick",
+  "main": "thundertick.js",
+  "scripts": {
+    "test": "mocha --recursive ./test/**/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Manak/thundertick.js.git"
+  },
+  "keywords": [
+    "thundertick"
+  ],
+  "author": "manak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Manak/thundertick.js/issues"
+  },
+  "devDependencies": {
+    "chrome-stub": "^1.2.0",
+    "mocha": "^2.5.3",
+    "should": "^9.0.2"
+  },
+  "homepage": "https://github.com/Manak/thundertick.js#readme"
+}
