@@ -8,8 +8,27 @@ var testExtension = require('./extension.js');
 
 
 describe("Test thundertick errors", ()=>{
+
 	beforeEach(function(){
 		testExtension.reset();
+
+		var portStub = {
+			onMessage:{
+				listeners:[],
+				addListener:function(f){
+					this.listeners.push(f);
+				}
+			},
+			postMessage:function(q){
+				return q;
+			},
+			triggerMessage:function(q){
+				for(var i in this.onMessage.listeners){
+					this.onMessage.listeners[i](q);
+				}
+			}
+		}
+		chrome.runtime.connect.returns(portStub);
 	});
 
 	it("should throw error for missing options", function(done){
