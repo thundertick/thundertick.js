@@ -2,7 +2,10 @@ new function(){
 
 	function ThundertickExtension(opts){
 		if(!opts.regex || !opts.answerRegex || !opts.search || !opts.suggestion){
-			return console.err("Missing required options");
+			throw new Error("Missing required options");
+		}
+		if(typeof regex != 'string' || typeof answerRegex != 'string'){
+			throw new Error("Regex and answerRegex have to be defined as strings");
 		}
 		//Register Extension with thundertick
 		const THUNDERTICK = "flgjiafbioledndgpeamhfoipgldgmca";
@@ -31,7 +34,7 @@ new function(){
 			if(req.type == "search-query"){
 				var callback = function(results){
 					if(!Array.isArray(results)){
-						throw new Error("Search function should return an array!");
+						throw new Error("Search function should return an array");
 					} else {
 						this.chromePort.postMessage({
 							type:"results",

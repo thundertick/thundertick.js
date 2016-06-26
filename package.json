@@ -19,9 +19,10 @@
     "url": "https://github.com/Manak/thundertick.js/issues"
   },
   "devDependencies": {
-    "chrome-stub": "^1.2.0",
     "mocha": "^2.5.3",
-    "should": "^9.0.2"
+    "should": "^9.0.2",
+    "sinon": "^1.17.4",
+    "sinon-chrome": "^1.1.2"
   },
   "homepage": "https://github.com/Manak/thundertick.js#readme"
 }
