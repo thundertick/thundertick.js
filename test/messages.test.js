@@ -2,14 +2,17 @@ global.chrome = require('sinon-chrome');
 var thundertick = require('../thundertick.js');
 var sinon = require('sinon');
 var should = require("should");
-var testExtension = require('./extension.js');
+
 require('should-sinon');
 
+var testExtension = {};
 
 
 describe("Test that chrome api messages are being sent at the right times", ()=>{
 
 	beforeEach(function(){
+		delete require.cache['./extension.js'];
+		testExtension = require('./extension.js');
 		testExtension.reset();
 		var portStub = {
 			onMessage:{
@@ -27,17 +30,17 @@ describe("Test that chrome api messages are being sent at the right times", ()=>
 				}
 			}
 		}
-		global.chrome.runtime['connect'] = function(){
-
-		}
+		chrome.runtime.connect.reset();
+		chrome.runtime.connect.returns(portStub);
 	});
 
 	it("should connect to thundertick during construction of the extension", function(done){
+		var t = new thundertick(testExtension);
+		chrome.runtime.connect.should.be.calledWith("flgjiafbioledndgpeamhfoipgldgmca");
 		done();
 	});
 
 	it("should respond with results to a query", function(done){
-		return done();
 		var p = new thundertick(testExtension);
 		var spy = sinon.spy(p.chromePort, "postMessage");
 		p.chromePort.triggerMessage({
@@ -47,5 +50,6 @@ describe("Test that chrome api messages are being sent at the right times", ()=>
 			}
 		});
 		spy.should.be.calledOnce();
+		done();
 	});
 });
