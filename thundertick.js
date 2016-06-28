@@ -1,5 +1,6 @@
 new function(){
 
+
 	function ThundertickExtension(opts){
 		if(!opts.regex || !opts.answerRegex || !opts.search || !opts.suggestion){
 			throw new Error("Missing required options");
