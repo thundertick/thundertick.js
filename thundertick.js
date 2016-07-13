@@ -1,6 +1,5 @@
 new function(){
 
-
 	function ThundertickExtension(opts){
 		if(!opts.regex || !opts.answerRegex || !opts.search || !opts.suggestion){
 			throw new Error("Missing required options");
@@ -9,9 +8,7 @@ new function(){
 			throw new Error("Regex and answerRegex have to be defined as strings");
 		}
 		//Register Extension with thundertick
-		const THUNDERTICK = "flgjiafbioledndgpeamhfoipgldgmca";
-		this.chromePort = chrome.runtime.connect(THUNDERTICK);
-
+		this.chromePort = undefined;
 		var debug = false;
 		var regex = opts.regex;
 		var answerRegex = opts.answerRegex;
@@ -28,33 +25,44 @@ new function(){
 		} else {
 			debug = true;
 		}
+		this.connect = function(){
+			const THUNDERTICK = "flgjiafbioledndgpeamhfoipgldgmca";
+			this.chromePort = chrome.runtime.connect(THUNDERTICK);
 
-		//Add search query listener
-		this.chromePort.onMessage.addListener(function(req){
-			log(req);
-			if(req.type == "search-query"){
-				var callback = function(results){
-					if(!Array.isArray(results)){
-						throw new Error("Search function should return an array");
-					} else {
-						for(var i in results){
-							var result = results[i];
-							if(!result.name || !result.content || !result.title){
-								throw new Error("You are missing certain attributes in your results");
+			this.chromePort.onDisconnect.addListener(function(){
+				setTimeout(function(){
+					this.connect.bind(this)();
+					this.bindListeners.bind(this)();
+				}.bind(this), 2000);
+			}.bind(this));
+		}
+		this.bindListeners = function(){
+			//Add search query listener
+			this.chromePort.onMessage.addListener(function(req){
+				log(req);
+				if(req.type == "search-query"){
+					var callback = function(results){
+						if(!Array.isArray(results)){
+							throw new Error("Search function should return an array");
+						} else {
+							for(var i in results){
+								var result = results[i];
+								if(!result.name || !result.content || !result.title){
+									throw new Error("You are missing certain attributes in your results");
+								}
 							}
+							this.chromePort.postMessage({
+								type:"results",
+								body:{
+									results:results
+								}
+							});
 						}
-						this.chromePort.postMessage({
-							type:"results",
-							body:{
-								results:results
-							}
-						});
-					}
-				}.bind(this);
+					}.bind(this);
 
-				search(req.body.query, callback);
-			}
-		}.bind(this));
+					search(req.body.query, callback);
+				}
+			}.bind(this));
 
 		//Add response selection listener
 		this.chromePort.onMessage.addListener(function(req){
@@ -73,19 +81,22 @@ new function(){
 		this.chromePort.postMessage({
 			type:"registration",
 			body:{
-			    regex:regex,
-		    	answerRegex:answerRegex
+				regex:regex,
+				answerRegex:answerRegex
 			}
 		});
-
-		return this;
 	}
 
-	if(typeof module != 'undefined' && typeof module.exports != 'undefined'){
-		module.exports = ThundertickExtension;
-	} else {
-		window.Thundertick = ThundertickExtension;
-	}
+	this.connect.bind(this)();
+	this.bindListeners.bind(this)();
+	return this;
+}
+
+if(typeof module != 'undefined' && typeof module.exports != 'undefined'){
+	module.exports = ThundertickExtension;
+} else {
+	window.Thundertick = ThundertickExtension;
+}
 
 
 }();

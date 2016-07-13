@@ -21,6 +21,12 @@ describe("Test that chrome api messages are being sent at the right times", ()=>
 					this.listeners.push(f);
 				}
 			},
+			onDisconnect:{
+				listeners:[],
+				addListener:function(f){
+					this.listeners.push(f);
+				}
+			},
 			postMessage:function(q){
 				return q;
 			},
@@ -52,4 +58,17 @@ describe("Test that chrome api messages are being sent at the right times", ()=>
 		spy.should.be.calledOnce();
 		done();
 	});
+
+	it("should reconnect to thundertick if disconnected", function(done){
+		this.timeout(5000);
+		var p = new thundertick(testExtension);
+		for(var i in p.chromePort.onDisconnect.listeners){
+			p.chromePort.onDisconnect.listeners[i]();
+		}
+		setTimeout(function(){
+			chrome.runtime.connect.should.be.calledTwice();
+			done();
+		},2000);
+	});
+
 });

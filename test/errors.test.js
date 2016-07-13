@@ -19,6 +19,12 @@ describe("Test thundertick errors", ()=>{
 					this.listeners.push(f);
 				}
 			},
+			onDisconnect:{
+				listeners:[],
+				addListener:function(f){
+					this.listeners.push(f);
+				}
+			},
 			postMessage:function(q){
 				return q;
 			},
