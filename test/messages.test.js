@@ -42,7 +42,7 @@ describe("Test that chrome api messages are being sent at the right times", ()=>
 
 	it("should connect to thundertick during construction of the extension", function(done){
 		var t = new thundertick(testExtension);
-		chrome.runtime.connect.should.be.calledWith("flgjiafbioledndgpeamhfoipgldgmca");
+		chrome.runtime.connect.should.be.calledWith("fjlfmlponipgmabidmcmijicbbfnbnnj");
 		done();
 	});
 

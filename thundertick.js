@@ -26,7 +26,7 @@ new function(){
 			debug = true;
 		}
 		this.connect = function(){
-			const THUNDERTICK = "flgjiafbioledndgpeamhfoipgldgmca";
+			const THUNDERTICK = "fjlfmlponipgmabidmcmijicbbfnbnnj";
 			this.chromePort = chrome.runtime.connect(THUNDERTICK);
 
 			this.chromePort.onDisconnect.addListener(function(){
