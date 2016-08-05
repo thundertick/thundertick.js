@@ -6,6 +6,11 @@ module.exports = {
 	regex:"share",
 	answerRegex:"^(share:)(.+)",
 	debug:false,
+	doc:{
+		type:'command',
+		keyword:'t',
+		info:'j'
+	},
 	search:function(query, cb){
 		cb([]);
 	},
