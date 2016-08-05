@@ -1,7 +1,7 @@
 new function(){
 
 	function ThundertickExtension(opts){
-		if(!opts.regex || !opts.answerRegex || !opts.search || !opts.suggestion){
+		if(!opts.regex || !opts.answerRegex || !opts.search || !opts.suggestion || !opts.doc){
 			throw new Error("Missing required options");
 		}
 		if(typeof opts.regex != 'string' || typeof opts.answerRegex != 'string'){
@@ -14,6 +14,7 @@ new function(){
 		var answerRegex = opts.answerRegex;
 		var search = opts.search;
 		var suggestion = opts.suggestion;
+		var doc = opts.doc;
 		var log = function(a){
 			if(debug){
 				console.log(a);
@@ -82,7 +83,8 @@ new function(){
 			type:"registration",
 			body:{
 				regex:regex,
-				answerRegex:answerRegex
+				answerRegex:answerRegex,
+				doc:doc
 			}
 		});
 	}
